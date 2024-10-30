@@ -14,29 +14,35 @@
     <button>Yuborish</button>
 </form>
 <?php
-    define('WORK_TIME', 8);
-    if (isset($_GET['arrived_at']) and isset($_GET['leaved_at'])) {
-        $arrived_at = new DateTime($_GET['arrived_at']);
-        $leaved_at = new DateTime($_GET['leaved_at']);
-        $diff = $arrived_at->diff($leaved_at);
-//        echo "<h1>Arrived at: " . $_GET['arrived_at'] . "</h1>";
-//        echo "<h1>Arrived at: " . $_GET['leaved_at'] . "</h1>";
-//        echo "<h1>". WORK_TIME . "</h1>";
-//        echo $diff->h;
-//        echo "<br>";
-//        echo $diff->i;
-        echo "
+
+$dns = "mysql:host=127.0.0.1;dbname=work_of_tracker";
+
+$username = "root";
+$password = "1234";
+
+$pdo = new PDO($dns, $username, $password);
+
+define('WORK_TIME', 8);
+if (isset($_GET['arrived_at']) and isset($_GET['leaved_at'])) {
+    $arrived_at = $_GET['arrived_at'];
+    $leaved_at = $_GET['leaved_at'];
+    $query = "INSERT INTO work_times (arrived_at, leaved_at) VALUES(:arrived_at, :leaved_at)";
+
+    $stmt = $pdo->prepare($query);
+
+    $stmt->bindParam(':leaved_at', $leaved_at);
+    $stmt->bindParam(':arrived_at', $arrived_at);
+
+    $stmt->execute();
+
+    echo "
         <h1>Arrived at " . $_GET['arrived_at'] . "</h1>
         <h1>Leaved at {$_GET['leaved_at']}</h1>
-        <h1>Leaved at ". WORK_TIME ."</h1>
-        <h1>Diff Hour: $diff->h </h1>
-        <h1>Diff Hour: $diff->i </h1>
-        ";
-    }
+        <h1>Leaved at " . WORK_TIME . "</h1>";
+}
 ?>
 </body>
 </html>
-
 
 
 <?php
