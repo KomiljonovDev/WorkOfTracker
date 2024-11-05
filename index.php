@@ -8,9 +8,9 @@
     <title>Work Of Tracker</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </head>
-<body>
+<body class="bg-secondary">
 <div class="container">
-    <h1 class="text-danger text-center">Work Of Tracker</h1>
+    <h1 class="text-primary text-center">Work Of Tracker</h1>
     <div class="row align-items-end my-3">
         <div class="col">
             <form method="post" class="row g-3 mt-3 align-items-end">
@@ -34,10 +34,22 @@
     </div>
 
     <?php
-    const REQUIRED_WORK_HOUR_DAILY = 8;
 
-    $dsn = 'mysql:host=127.0.0.1;dbname=work_of_tracker';
-    $pdo = new PDO($dsn, 'root', '1234');
+
+//    require 'vendor/autoload.php'; -> error berib dasturni to'xtatadi agar fayl topilmasa
+//    include 'vendor/autoload.php'; -> warning berib dasturni to'xtatmaydi agar fayl topilmasa
+
+
+//    require_once 'DB.php'; -> faylni chaqiradi agar avval chaqirilmagan bo'lsa, agar fayl topilmasa error berib dasturni to'xtatadi
+//    include_once 'DB.php' -> faylni chaqiradi agar avval chaqirilmagan bo'lsa, agar fayl topilmasa warning berib dastur to'xtatmaydi
+
+    require 'DB.php';
+
+    $db = new DB();
+
+    $pdo = $db->pdo;
+
+    const REQUIRED_HOUR_DURATION = 8;
     if (isset($_POST['name']) && isset($_POST['arrived_at']) && isset($_POST['leaved_at'])) {
 
         if (!empty($_POST['name']) && !empty($_POST['arrived_at']) && !empty($_POST['leaved_at'])) {
@@ -49,7 +61,7 @@
             $hour = $diff->h;
             $minute = $diff->i;
             $second = $diff->s;
-            $total = ((REQUIRED_WORK_HOUR_DAILY * 3600) - ($hour * 3600) + ($minute * 60));
+            $total = ((REQUIRED_HOUR_DURATION * 3600) - (($hour * 3600) + ($minute * 60)));
 
             $query = "INSERT INTO daily (name,arrived_at,leaved_at, required_of) 
                         VALUES (:name, :arrived_at, :leaved_at, :required_of)";
@@ -60,6 +72,8 @@
             $stmt->bindValue(':leaved_at', $leaved_at->format('Y-m-d H:i'));
             $stmt->bindParam(':required_of', $total);
             $stmt->execute();
+            header('Location: index.php');
+            return;
         }
     }
 
