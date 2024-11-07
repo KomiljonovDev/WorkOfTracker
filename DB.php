@@ -44,7 +44,6 @@ class DB {
     public function __construct () {
         $dsn = 'mysql:host=127.0.0.1;dbname=work_of_tracker';
         $this->pdo = new PDO($dsn, 'root', '1234');
-        return $this->pdo;
     }
 }
 

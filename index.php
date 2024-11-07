@@ -1,6 +1,7 @@
 <?php
 
 require 'WorkDay.php';
+
 $workDay = new WorkDay();
 
 if (isset($_POST['name']) && isset($_POST['arrived_at']) && isset($_POST['leaved_at'])) {
@@ -9,6 +10,12 @@ if (isset($_POST['name']) && isset($_POST['arrived_at']) && isset($_POST['leaved
     }
 }
 $records = $workDay->getWorDayList();
+
+
+$debt = $workDay->calculateDebtTimeForEachUser();
+if (isset($_GET['done']) && !empty($_GET['done'])) {
+    $workDay->markAsDone($_GET['done']);
+}
 
 require 'view.php';
 

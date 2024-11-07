@@ -4,10 +4,10 @@ require 'DB.php';
 
 class WorkDay{
     const REQUIRED_HOUR_DURATION = 8;
-    public $pdo;
+    public $conn;
     public function __construct () {
         $db = new DB();
-        $this->pdo = $db->pdo;
+        $this->conn = $db->pdo;
     }
     public function store (string $name, string $arrived_at, string $leaved_at) {
         // parametrdan arrived_at ni olib date object yasaymiz
@@ -16,11 +16,10 @@ class WorkDay{
         $diff = $arrived_at->diff($leaved_at);
         $hour = $diff->h;
         $minute = $diff->i;
-        $second = $diff->s;
         $total = ((self::REQUIRED_HOUR_DURATION * 3600) - (($hour * 3600) + ($minute * 60)));
         $query = "INSERT INTO daily (name,arrived_at,leaved_at, required_of) 
                         VALUES (:name, :arrived_at, :leaved_at, :required_of)";
-        $stmt = $this->pdo->prepare($query);
+        $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':name', $name);
         $stmt->bindValue(':arrived_at', $arrived_at->format('Y-m-d H:i'));
         $stmt->bindValue(':leaved_at', $leaved_at->format('Y-m-d H:i'));
@@ -31,7 +30,19 @@ class WorkDay{
     }
     public function getWorDayList () {
         $query = "SELECT * FROM daily";
-        $stmt = $this->pdo->query($query);
+        $stmt = $this->conn->query($query);
         return $stmt->fetchAll();
+    }
+    public function calculateDebtTimeForEachUser () {
+        $query = "SELECT name, SUM(required_of) as debt FROM daily GROUP BY name";
+        $stmt = $this->conn->query($query);
+        return $stmt->fetchAll();
+    }
+    public function markAsDone (int $id) {
+        $query = "UPDATE daily SET required_of = 0 WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        header('Location: index.php');
     }
 }

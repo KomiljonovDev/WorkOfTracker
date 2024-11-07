@@ -10,24 +10,25 @@
 </head>
 <body class="">
 <div class="container">
-    <h1 class="text-primary text-center">Work Of Tracker</h1>
+    <a href="index.php?test=Islombek">dscsdcsdc</a>
+    <h1 class="text-primary text-center mt-4">Work Of Tracker</h1>
     <div class="row align-items-end my-3">
         <div class="col">
             <form method="post" class="row g-3 mt-3 align-items-end">
                 <div class="col-auto">
-                    <label for="name">Ismi</label>
+                    <label for="name">Name</label>
                     <input type="text" name="name" class="form-control" id="name">
                 </div>
                 <div class="col-auto">
-                    <label for="arrived_at">Kelgan vaqti</label>
+                    <label for="arrived_at">Arrived At</label>
                     <input type="datetime-local" name="arrived_at" class="form-control" id="arrived_at">
                 </div>
                 <div class="col-auto">
-                    <label for="leaved_at">Ketgan vaqti</label>
+                    <label for="leaved_at">Leaved At</label>
                     <input type="datetime-local" name="leaved_at" class="form-control" id="leaved_at">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">Yuborish</button>
+                    <button type="submit" class="btn btn-primary">Send</button>
                 </div>
             </form>
         </div>
@@ -36,10 +37,11 @@
         <thead>
         <tr class="table-secondary">
             <th scope="col">#</th>
-            <th scope="col">Ism</th>
-            <th scope="col">Kelgan vaqti</th>
-            <th scope="col">Ketgan vaqti</th>
-            <th scope="col">Ishlash kerak</th>
+            <th scope="col">Name</th>
+            <th scope="col">Arrived At</th>
+            <th scope="col">Leaved At</th>
+            <th scope="col">Required work</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -52,6 +54,7 @@
                 <td>{$record['arrived_at']}</td>
                 <td>{$record['leaved_at']}</td>
                 <td>" . gmdate('H:i',$record['required_of']) . "</td>
+                <td><a href='index.php?done=" . $record['id'] . "'>Done</a></td>
             </tr>";
         }
 
