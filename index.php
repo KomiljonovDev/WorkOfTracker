@@ -16,7 +16,9 @@ $debt = $workDay->calculateDebtTimeForEachUser();
 if (isset($_GET['done']) && !empty($_GET['done'])) {
     $workDay->markAsDone($_GET['done']);
 }
-
+//if (isset()){
+//
+//}
 require 'view.php';
 
 ?>

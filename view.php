@@ -10,7 +10,6 @@
 </head>
 <body class="">
 <div class="container">
-    <a href="index.php?test=Islombek">dscsdcsdc</a>
     <h1 class="text-primary text-center mt-4">Work Of Tracker</h1>
     <div class="row align-items-end my-3">
         <div class="col">
@@ -27,9 +26,16 @@
                     <label for="leaved_at">Leaved At</label>
                     <input type="datetime-local" name="leaved_at" class="form-control" id="leaved_at">
                 </div>
+
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">Send</button>
                 </div>
+                <div class="col-auto">
+                    <button form="export" type="submit" class="btn btn-success">Export</button>
+                </div>
+            </form>
+            <form action="" id="export" method="post">
+                <input type="text" name="export" value="true" hidden="">
             </form>
         </div>
     </div>
